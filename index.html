@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sunnah Life — Islamic Lifestyle Store</title>
+<meta name="description" content="Sunnah Life — ঘড়ি, জায়নামাজ, আতর ও ইসলামিক লাইফস্টাইল পণ্য।">
+<style>
+:root{--bg:#171516;--card:#211e1f;--gold:#e8b82f;--gold2:#ffd95c;--text:#fff8e5;--muted:#c9c0ae}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,"Noto Sans Bengali",sans-serif}
+a{text-decoration:none;color:inherit}.wrap{max-width:1150px;margin:auto;padding:0 18px}
+header{position:sticky;top:0;z-index:10;background:rgba(23,21,22,.94);backdrop-filter:blur(12px);border-bottom:1px solid #3b3330}
+.nav{height:72px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:1px}.brand img{width:48px;height:48px;object-fit:cover;border-radius:10px}.brand span{color:var(--gold)}
+.cart{border:1px solid #594c2b;background:#2a251d;color:var(--gold2);padding:10px 15px;border-radius:999px;cursor:pointer}
+.hero{padding:45px 0 35px}.heroBox{min-height:330px;border:1px solid #4a3d24;border-radius:28px;background:radial-gradient(circle at 50% 0,#3a301b 0,#211e1f 48%,#171516 100%);display:grid;place-items:center;text-align:center;padding:35px;overflow:hidden}
+.hero img{width:min(430px,80%);max-height:180px;object-fit:contain;mix-blend-mode:screen}.hero h1{margin:18px 0 8px;font-size:clamp(30px,6vw,58px);color:var(--gold2)}.hero p{margin:0;color:var(--muted);font-size:17px}
+.sectionHead{display:flex;justify-content:space-between;align-items:end;margin:25px 0 18px}.sectionHead h2{margin:0;font-size:28px}.sectionHead small{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding-bottom:45px}
+.card{background:var(--card);border:1px solid #393133;border-radius:20px;overflow:hidden;transition:.2s}.card:hover{transform:translateY(-3px);border-color:#806b31}
+.pic{height:210px;display:grid;place-items:center;background:linear-gradient(135deg,#292326,#171516);overflow:hidden}.pic img{width:100%;height:100%;object-fit:cover}.info{padding:18px}.info h3{margin:0 0 7px;font-size:21px}.desc{color:var(--muted);font-size:14px;min-height:38px}.price{font-size:22px;color:var(--gold2);font-weight:800;margin:13px 0}.btn{width:100%;border:0;border-radius:12px;padding:12px;background:var(--gold);color:#171516;font-weight:800;cursor:pointer}.btn:hover{background:var(--gold2)}
+footer{border-top:1px solid #393133;padding:28px 0;color:var(--muted);text-align:center}.wa{position:fixed;right:18px;bottom:18px;background:#25d366;color:white;border-radius:999px;padding:13px 18px;font-weight:800;box-shadow:0 8px 30px #0008}
+.modal{display:none;position:fixed;inset:0;background:#000b;z-index:20;align-items:center;justify-content:center;padding:18px}.modal.open{display:flex}.box{width:min(520px,100%);background:#211e1f;border:1px solid #55482a;border-radius:22px;padding:22px}.box h2{margin-top:0;color:var(--gold2)}label{display:block;margin:12px 0 6px;color:var(--muted)}input,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #51494a;background:#171516;color:white}textarea{min-height:90px}.row{display:flex;gap:10px;margin-top:15px}.row button{flex:1}.close{background:#332e2f;color:white}
+@media(max-width:750px){.grid{grid-template-columns:1fr}.heroBox{min-height:290px}.nav{height:64px}.brand img{width:42px;height:42px}}
+</style>
+</head>
+<body>
+<header><div class="wrap nav">
+  <a class="brand" href="#"><img src="assets/logo.jpg" alt="Sunnah Life logo"><span>SUNNAH LIFE</span></a>
+  <button class="cart" onclick="openCart()">🛒 Cart (<b id="count">0</b>)</button>
+</div></header>
+
+<main class="wrap">
+<section class="hero">
+  <div class="heroBox">
+    <div>
+      <img src="assets/logo.jpg" alt="Sunnah Life">
+      <h1>Live the Sunnah</h1>
+      <p>ইসলামিক লাইফস্টাইল পণ্যের বিশ্বস্ত ঠিকানা</p>
+    </div>
+  </div>
+</section>
+
+<div class="sectionHead"><h2>আমাদের পণ্য</h2><small>৩টি পণ্য</small></div>
+<section class="grid" id="products"></section>
+</main>
+
+<footer>© 2026 Sunnah Life · Order via WhatsApp: 01577325633</footer>
+<a class="wa" href="https://wa.me/8801577325633" target="_blank">WhatsApp Order</a>
+
+<div class="modal" id="modal">
+ <div class="box">
+  <h2>অর্ডার কনফার্ম করুন</h2>
+  <div id="summary"></div>
+  <label>আপনার নাম</label><input id="name" placeholder="নাম">
+  <label>মোবাইল নম্বর</label><input id="phone" placeholder="01XXXXXXXXX">
+  <label>ডেলিভারি ঠিকানা</label><textarea id="address" placeholder="সম্পূর্ণ ঠিকানা"></textarea>
+  <div class="row"><button class="btn close" onclick="closeCart()">বন্ধ করুন</button><button class="btn" onclick="sendOrder()">WhatsApp-এ অর্ডার</button></div>
+ </div>
+</div>
+
+<script>
+const products=[
+ {name:"সুন্দর ঘড়ি",price:660,image:"assets/watch.png",desc:"স্টাইলিশ ও দৈনন্দিন ব্যবহারের জন্য"},
+ {name:"জায়নামাজ",price:400,image:"assets/janamaz.png",desc:"নামাজের জন্য সুন্দর জায়নামাজ"},
+ {name:"আতর",price:150,image:"assets/attar.png",desc:"মনোমুগ্ধকর সুগন্ধির আতর"}
+];
+let cart=[];
+const money=n=>n.toLocaleString("bn-BD")+" টাকা";
+function render(){
+ document.getElementById("products").innerHTML=products.map((p,i)=>`
+ <article class="card"><div class="pic"><img src="${p.image}" alt="${p.name}"></div><div class="info">
+ <h3>${p.name}</h3><div class="desc">${p.desc}</div><div class="price">${money(p.price)}</div>
+ <button class="btn" onclick="add(${i})">কার্টে যোগ করুন</button></div></article>`).join("");
+}
+function add(i){cart.push(products[i]);document.getElementById("count").textContent=cart.length;openCart();}
+function openCart(){
+ if(!cart.length){alert("কার্টে কোনো পণ্য নেই।");return}
+ document.getElementById("summary").innerHTML="<p>"+cart.map(p=>`${p.name} — ${money(p.price)}`).join("<br>")+
+ `<br><b style="color:#ffd95c">মোট: ${money(cart.reduce((s,p)=>s+p.price,0))}</b></p>`;
+ document.getElementById("modal").classList.add("open");
+}
+function closeCart(){document.getElementById("modal").classList.remove("open")}
+function sendOrder(){
+ const n=document.getElementById("name").value.trim(),ph=document.getElementById("phone").value.trim(),ad=document.getElementById("address").value.trim();
+ if(!n||!ph||!ad){alert("নাম, মোবাইল ও ঠিকানা দিন।");return}
+ const items=cart.map(p=>`• ${p.name} — ${money(p.price)}`).join("\n");
+ const total=cart.reduce((s,p)=>s+p.price,0);
+ const msg=`আসসালামু আলাইকুম, Sunnah Life থেকে অর্ডার করতে চাই।\n\n${items}\n\nমোট: ${money(total)}\n\nনাম: ${n}\nমোবাইল: ${ph}\nঠিকানা: ${ad}`;
+ window.open("https://wa.me/8801577325633?text="+encodeURIComponent(msg),"_blank");
+}
+render();
+</script>
+</body>
+</html>
